@@ -7,9 +7,27 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
 <style>
+  
+.spark{
+position:fixed;
+pointer-events:none;
+animation:spark .7s forwards;
+}
+
+@keyframes spark{
+to{
+opacity:0;
+transform:scale(0);
+}
+}
+  
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
+body 
+ 
+{
+
+  
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -20,6 +38,7 @@ body {
   overflow: hidden;
   padding: 20px;
 }
+
 
 .stars-layer {
   position: fixed;
@@ -279,9 +298,192 @@ body {
   0% { transform: scale(0.5); opacity: 0.6; }
   100% { transform: scale(2.5); opacity: 0; }
 }
+body {
+  animation: pageFade 2s ease-out;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+    filter: blur(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+/* karta yumshoq kiradi */
+.card {
+  animation:
+    softReveal 1.8s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+@keyframes softReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(35px) scale(0.94);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+/* ===== GUL YAPROQLARI ===== */
+.petal {
+  position: fixed;
+  top: -40px;
+  pointer-events: none;
+  z-index: 2;
+  animation: petalFall linear forwards;
+}
+
+@keyframes petalFall {
+  0% {
+    transform: translateY(-30px) rotate(0deg);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    transform:
+      translateY(120vh)
+      translateX(80px)
+      rotate(540deg);
+
+    opacity: 0;
+  }
+}
+#countdown{
+
+margin-top:25px;
+
+font-size:48px;
+
+font-weight:bold;
+
+color:#ff7ab6;
+
+text-shadow:
+0 0 25px #ff4b95;
+
+}
+
+#locationScene{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+z-index:99999;
+
+justify-content:center;
+
+align-items:center;
+
+background:
+rgba(0,0,0,.82);
+
+}
+
+#locationScene video{
+
+position:absolute;
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+opacity:.35;
+
+}
+
+.sceneContent{
+
+position:relative;
+
+width:90%;
+
+max-width:700px;
+
+padding:40px;
+
+border-radius:35px;
+
+background:
+rgba(255,255,255,.08);
+
+backdrop-filter:
+blur(18px);
+
+border:
+1px solid rgba(255,180,220,.4);
+
+box-shadow:
+0 0 80px rgba(255,50,150,.3);
+
+text-align:center;
+
+color:white;
+
+}
+
+.sceneContent h1{
+
+font-size:40px;
+
+margin-bottom:20px;
+
+}
+
+.mapLink{
+
+display:inline-block;
+
+margin-top:20px;
+
+padding:16px 30px;
+
+border-radius:50px;
+
+text-decoration:none;
+
+background:
+linear-gradient(
+135deg,
+#ff5d95,
+#d81b60
+);
+
+color:white;
+
+}
 </style>
 </head>
 <body>
+
+<div class="stars-layer" id="starsLayer"></div>
+
+ 
+
+
+</script>
+
 
 <div class="stars-layer" id="starsLayer"></div>
 
@@ -297,7 +499,7 @@ body {
       <h1>Salom, qalbim</h1>
       <p class="tagline">Siz uchun maxsus taklif</p>
       <div class="divider"></div>
-      <p>Men bilan uchrashuvga chiqasanmi?<br>Seni ko'rishni juda xohlayman 💖</p>
+      <p id="typingText"></p>
       <div class="btns">
         <button class="btn-yes" onclick="handleYes()">Ha, albatta ❤️</button>
         <button class="btn-no" id="noBtn">Yana o'ylab ko'raman</button>
@@ -332,10 +534,84 @@ body {
       <h2>Zo'r! Kutib qolaman</h2>
       <p>Sen bilan o'tkazgan har bir daqiqa mening uchun abadiylikkday tuyuladi.</p>
       <div id="meetDetails"></div>
+      <div id="countdown"></div>
     </div>
 
   </div>
 </div>
+<audio id="bgMusic" autoplay loop>
+  <source src="./music/music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  /* ===== PARALLAX ===== */
+document.addEventListener("mousemove",(e)=>{
+
+const x=(e.clientX/window.innerWidth-.5)*20;
+const y=(e.clientY/window.innerHeight-.5)*20;
+
+document.body.style.backgroundPosition=
+`${50+x}% ${50-y}%`;
+
+});
+
+/* ===== MATN YOZILISH ===== */
+
+const text=
+"Men bilan uchrashuvga chiqasanmi? Seni ko'rishni juda xohlayman 💖";
+
+let i=0;
+
+function typeText(){
+
+if(i<text.length){
+
+document.getElementById("typingText")
+.innerHTML+=text.charAt(i);
+
+i++;
+
+setTimeout(typeText,50);
+
+}
+
+}
+
+typeText();
+
+/* ===== KURSOR YALTIRASH ===== */
+
+document.addEventListener("mousemove",(e)=>{
+
+const s=document.createElement("div");
+
+s.className="spark";
+
+s.innerHTML="✨";
+
+s.style.left=e.clientX+"px";
+
+s.style.top=e.clientY+"px";
+
+document.body.appendChild(s);
+
+setTimeout(()=>s.remove(),700);
+
+}); 
+window.addEventListener("load", () => {
+  const audio = document.getElementById("bgMusic");
+
+  audio.volume = 0.5;
+
+  audio.play().catch(() => {
+    document.body.addEventListener(
+      "click",
+      () => audio.play(),
+      { once: true }
+    );
+  });
+});
+</script>
 
 <script>
 /* ===== TELEGRAM ===== */
@@ -368,7 +644,40 @@ function initStars() {
     layer.appendChild(s);
   }
 }
+function createPetal() {
 
+  const petal = document.createElement("div");
+
+  petal.className = "petal";
+
+  const flowers = [
+    "🌸",
+    "🌺",
+    "🌷",
+    "🌹",
+    "💮"
+  ];
+
+  petal.innerHTML =
+    flowers[Math.floor(Math.random()*flowers.length)];
+
+  petal.style.left =
+    Math.random()*100 + "vw";
+
+  petal.style.fontSize =
+    (16 + Math.random()*20) + "px";
+
+  petal.style.animationDuration =
+    (6 + Math.random()*5) + "s";
+
+  document.body.appendChild(petal);
+
+  setTimeout(() => {
+    petal.remove();
+  },11000);
+}
+
+setInterval(createPetal, 500);
 /* ===== UCHUVCHI YURAKLAR ===== */
 function spawnHeart() {
   const h = document.createElement('div');
@@ -448,6 +757,9 @@ noBtn.addEventListener('touchstart', function(e) {
 
 /* ===== "HA" TUGMA ===== */
 function handleYes() {
+for(let i=0;i<120;i++){
+setTimeout(createPetal,i*40);
+}
   document.getElementById('mainView').style.display = 'none';
   document.getElementById('meetingBox').style.display = 'block';
   noBtn.style.display = 'none';
@@ -481,14 +793,115 @@ async function confirmMeeting() {
     `💖 Uchrashuv tasdiqlandi!\n📅 Kun: ${day}\n🕐 Vaqt: ${time}\n📍 Joy: Magic City`
   );
 
-  launchConfetti();
-  for (let i = 0; i < 60; i++) {
-    setTimeout(spawnHeart, i * 55);
-  }
+ launchConfetti();
+
+for (let i = 0; i < 60; i++) {
+setTimeout(spawnHeart, i * 55);
+}
+
+let sec=5;
+
+const c=
+document.getElementById(
+"countdown"
+);
+
+c.innerHTML=sec;
+
+const timer=
+setInterval(()=>{
+
+sec--;
+
+if(sec>0){
+
+c.innerHTML=sec;
+
+}else{
+
+clearInterval(timer);
+
+c.innerHTML="";
+
+document.getElementById(
+"locationScene"
+).style.display="flex";
+
+}
+
+},1000);
+}
+function openScene(){
+
+document.getElementById(
+"locationScene"
+).style.display="flex";
+
+}
+
+function closeScene(){
+
+document.getElementById(
+"locationScene"
+).style.display="none";
+
 }
 
 /* ===== ISHGA TUSHIRISH ===== */
 initStars();
 </script>
+
+
+
+
+</div>
+<div id="locationScene">
+
+<video autoplay muted loop playsinline>
+<source src="./video/location.mp4" type="video/mp4">
+</video>
+
+<div class="sceneContent">
+
+<h1>💖 Uchrashuv joyi</h1>
+
+<p>📍 Logo park</p>
+
+<p>📌 Toshkent shahri</p>
+
+<button class="btn-yes" onclick="closeScene()">
+Yopish
+</button>
+
+</div>
+
+</div>
+<div id="locationScene">
+
+<video autoplay muted loop playsinline>
+<source src="./video/location.mp4" type="video/mp4">
+</video>
+
+<div class="sceneContent">
+
+<h1>📍 Uchrashuv joyi</h1>
+
+<p>
+Logo Park<br>
+Toshkent shahri
+</p>
+
+<a
+class="mapLink"
+href="https://maps.google.com/?q=Logo+Park+Tashkent"
+target="_blank">
+
+📍 Manzilni ochish
+
+</a>
+
+</div>
+
+</div>
 </body>
 </html>
