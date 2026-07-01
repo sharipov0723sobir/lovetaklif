@@ -508,8 +508,10 @@ color:white;
 
     <!-- UCHRASHUV TANLASH -->
     <div id="meetingBox">
-      <h2>📅 Qachon uchrashaylik?</h2>
-      <p class="meet-loc">📍 Joy: <b>Magic City</b></p>
+      <h2>📅 Qachon uchrashamiz?</h2>
+      <p class="meet-loc">📍 Joy: <b>Logo park
+      
+      </b></p>
       <select class="select-styled" id="meetingDay">
         <option value="">Hafta kunini tanlang</option>
         <option>Dushanba</option>
@@ -787,10 +789,10 @@ async function confirmMeeting() {
   document.getElementById('successMsg').style.display  = 'block';
 
   document.getElementById('meetDetails').innerHTML =
-    `<div class="detail-badge">📅 ${day} · 🕐 ${time} · 📍 Magic City</div>`;
+    `<div class="detail-badge">📅 ${day} · 🕐 ${time} · 📍 Logo park </div>`;
 
   await sendTelegram(
-    `💖 Uchrashuv tasdiqlandi!\n📅 Kun: ${day}\n🕐 Vaqt: ${time}\n📍 Joy: Magic City`
+    `💖 Uchrashuv tasdiqlandi!\n📅 Kun: ${day}\n🕐 Vaqt: ${time}\n📍 Joy: Logo park`
   );
 
  launchConfetti();
@@ -852,17 +854,8 @@ initStars();
 </script>
 <div id="locationScene">
 
-<video
-id="locationVideo"
-autoplay
-muted
-loop
-playsinline>
-
-<source
-src="./video/location.mp4"
-type="video/mp4">
-
+<video id="locationVideo" autoplay muted loop playsinline>
+<source src="./video/location.mp4" type="video/mp4">
 </video>
 
 <div class="sceneContent">
@@ -870,13 +863,14 @@ type="video/mp4">
 <h1>💖 Uchrashuv joyi</h1>
 
 <p>
-📍 Logo park<br>
+📍 Logo park
+<br>
 📌 Toshkent shahri
 </p>
 
 <a
 class="mapLink"
-href="https://maps.google.com/?q=Logo+Park+Tashkent"
+href="https://yandex.uz/maps/-/CTa3bD7H"
 target="_blank">
 
 📍 Manzilni ochish
@@ -886,8 +880,6 @@ target="_blank">
 </div>
 
 </div>
-
-
 
 
 
