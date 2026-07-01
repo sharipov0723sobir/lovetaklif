@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Maxsus Taklif</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a0010 0%, #3d0028 40%, #1a0035 100%);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.stars-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+  animation: twinkle linear infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+.floating-heart {
+  position: fixed;
+  pointer-events: none;
+  animation: floatUp linear forwards;
+  z-index: 1;
+  user-select: none;
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-110vh) scale(0.4) rotate(360deg); opacity: 0; }
+}
+
+.card-wrap {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px;
+}
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,180,200,0.25);
+  border-radius: 28px;
+  padding: 44px 36px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(220,50,120,0.25), inset 0 0 40px rgba(255,100,160,0.05);
+  animation: cardEntrance 1.2s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(40px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+
+.rose-emoji {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 14px;
+  animation: roseBounce 2s ease-in-out infinite;
+}
+@keyframes roseBounce {
+  0%, 100% { transform: scale(1) rotate(-5deg); }
+  50% { transform: scale(1.15) rotate(5deg); }
+}
+
+.card h1 {
+  font-family: 'Playfair Display', serif;
+  color: #ffb6d9;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 20px rgba(255,100,160,0.6);
+}
+.tagline {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: rgba(255,210,230,0.75);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.divider {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #ff6fa8, transparent);
+  margin: 0 auto 22px;
+}
+.card p {
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  color: rgba(255,230,240,0.9);
+  font-size: 17px;
+  line-height: 1.75;
+  margin-bottom: 30px;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  align-items: center;
+}
+
+.btn-yes {
+  width: 100%;
+  padding: 16px 28px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #e8547a, #c2185b);
+  color: white;
+  box-shadow: 0 8px 30px rgba(220,50,120,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-yes::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+  border-radius: 50px;
+}
+.btn-yes:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 14px 40px rgba(220,50,120,0.6);
+}
+.btn-yes:active { transform: scale(0.97); }
+
+.btn-no {
+  width: 80%;
+  padding: 11px 20px;
+  border: 1px solid rgba(255,150,180,0.25);
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  color: rgba(255,180,200,0.55);
+  background: transparent;
+  transition: color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* Meeting box */
+#meetingBox {
+  display: none;
+  animation: fadeSlide 0.7s cubic-bezier(0.22,1,0.36,1) both;
+}
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+#meetingBox h2 {
+  font-family: 'Playfair Display', serif;
+  color: #ffb6d9;
+  font-size: 22px;
+  margin-bottom: 6px;
+  text-shadow: 0 0 15px rgba(255,100,160,0.5);
+}
+.meet-loc {
+  font-family: 'Lato', sans-serif;
+  color: rgba(255,210,230,0.7);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.meet-loc b { color: #ffb6d9; font-weight: 400; }
+
+.select-styled, .input-time {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,150,180,0.3);
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,230,240,0.9);
+  font-family: 'Lato', sans-serif;
+  font-size: 15px;
+  margin-bottom: 12px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.select-styled option { background: #3d0028; color: white; }
+.select-styled:focus, .input-time:focus {
+  border-color: rgba(255,100,160,0.6);
+  box-shadow: 0 0 0 3px rgba(220,50,120,0.15);
+}
+.input-time::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.5);
+}
+
+/* Success */
+#successMsg {
+  display: none;
+  animation: fadeSlide 0.8s cubic-bezier(0.22,1,0.36,1) both;
+}
+#successMsg .big-emoji {
+  font-size: 60px;
+  display: block;
+  margin-bottom: 16px;
+}
+#successMsg h2 {
+  font-family: 'Playfair Display', serif;
+  color: #ffb6d9;
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(255,100,160,0.6);
+}
+#successMsg p {
+  font-family: 'Lato', sans-serif;
+  color: rgba(255,210,230,0.8);
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 0;
+}
+.detail-badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 9px 22px;
+  border-radius: 50px;
+  border: 1px solid rgba(255,150,180,0.35);
+  background: rgba(255,255,255,0.05);
+  color: #ffb6d9;
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+/* Confetti */
+@keyframes confettiFall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.confetti-piece {
+  position: fixed;
+  pointer-events: none;
+  animation: confettiFall linear forwards;
+  z-index: 999;
+  border-radius: 2px;
+}
+
+/* Glow rings */
+.glow-ring {
+  position: fixed;
+  border-radius: 50%;
+  border: 1px solid rgba(255,100,160,0.12);
+  animation: expandRing 3s ease-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes expandRing {
+  0% { transform: scale(0.5); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="stars-layer" id="starsLayer"></div>
+
+<div class="glow-ring" style="width:200px;height:200px;top:30%;left:30%;animation-delay:0s;"></div>
+<div class="glow-ring" style="width:300px;height:300px;top:20%;left:20%;animation-delay:1.5s;"></div>
+
+<div class="card-wrap">
+  <div class="card" id="mainCard">
+
+    <!-- ASOSIY KO'RINISH -->
+    <div id="mainView">
+      <span class="rose-emoji">🌹</span>
+      <h1>Salom, qalbim</h1>
+      <p class="tagline">Siz uchun maxsus taklif</p>
+      <div class="divider"></div>
+      <p>Men bilan uchrashuvga chiqasanmi?<br>Seni ko'rishni juda xohlayman 💖</p>
+      <div class="btns">
+        <button class="btn-yes" onclick="handleYes()">Ha, albatta ❤️</button>
+        <button class="btn-no" id="noBtn">Yana o'ylab ko'raman</button>
+      </div>
+    </div>
+
+    <!-- UCHRASHUV TANLASH -->
+    <div id="meetingBox">
+      <h2>📅 Qachon uchrashaylik?</h2>
+      <p class="meet-loc">📍 Joy: <b>Magic City</b></p>
+      <select class="select-styled" id="meetingDay">
+        <option value="">Hafta kunini tanlang</option>
+        <option>Dushanba</option>
+        <option>Seshanba</option>
+        <option>Chorshanba</option>
+        <option>Payshanba</option>
+        <option>Juma</option>
+        <option>Shanba</option>
+        <option>Yakshanba</option>
+      </select>
+      <input type="time" class="input-time" id="meetingTime" value="18:00">
+      <div style="margin-top:6px;">
+        <button class="btn-yes" onclick="confirmMeeting()" style="font-size:15px;padding:14px 24px;">
+          Tasdiqlash 💖
+        </button>
+      </div>
+    </div>
+
+    <!-- MUVAFFAQIYAT -->
+    <div id="successMsg">
+      <span class="big-emoji">🥰</span>
+      <h2>Zo'r! Kutib qolaman</h2>
+      <p>Sen bilan o'tkazgan har bir daqiqa mening uchun abadiylikkday tuyuladi.</p>
+      <div id="meetDetails"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ===== TELEGRAM ===== */
+const BOT_TOKEN = "8839169188:AAGTrOI5yKv7z39ALIjhb_teud_vateoJlI";
+const CHAT_ID   = "5616151366";
+
+async function sendTelegram(msg) {
+  try {
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: CHAT_ID, text: msg })
+    });
+  } catch(e) { console.log(e); }
+}
+
+
+function initStars() {
+  const layer = document.getElementById('starsLayer');
+  for (let i = 0; i < 90; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%; top:${Math.random()*100}%;
+      animation-duration:${2+Math.random()*4}s;
+      animation-delay:${Math.random()*4}s;
+    `;
+    layer.appendChild(s);
+  }
+}
+
+/* ===== UCHUVCHI YURAKLAR ===== */
+function spawnHeart() {
+  const h = document.createElement('div');
+  h.className = 'floating-heart';
+  const emojis = ['❤️','💕','💖','💗','💓','💝','🌹','✨','💫'];
+  h.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  h.style.cssText = `
+    left:${Math.random()*95}vw;
+    bottom:-30px;
+    font-size:${18+Math.random()*22}px;
+    animation-duration:${5+Math.random()*5}s;
+  `;
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 11000);
+}
+setInterval(spawnHeart, 700);
+
+/* ===== KONFETTI ===== */
+function launchConfetti() {
+  const colors = ['#ff4081','#ff80ab','#f48fb1','#ffd6e8','#ffb6d9','#ff6fa8','#e91e63','#ffffff'];
+  for (let i = 0; i < 70; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      c.style.cssText = `
+        left:${Math.random()*100}vw;
+        top:-10px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        animation-duration:${2.5+Math.random()*2.5}s;
+        transform:rotate(${Math.random()*360}deg);
+        width:${6+Math.random()*8}px;
+        height:${10+Math.random()*10}px;
+      `;
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 6000);
+    }, i * 35);
+  }
+}
+
+/* ===== "YO'Q" TUGMA — QOCHADI ===== */
+const noBtn = document.getElementById('noBtn');
+let noCount = 0;
+const noMessages = [
+  "Yana o'ylab ko'raman",
+  "Hmm... balki keyinroq?",
+  "Qochib qutula olmaysan 😄",
+  "Menga nisbatan shafqatsizlik!",
+  "Yana bir bor o'yla...",
+  "Ha deyish osonroq 😊",
+  "Yuring endi... 🥺"
+];
+
+function moveNoBtn() {
+  const btnW = noBtn.offsetWidth;
+  const btnH = noBtn.offsetHeight;
+  const maxX = window.innerWidth  - btnW - 16;
+  const maxY = window.innerHeight - btnH - 16;
+  const newX = Math.max(8, Math.floor(Math.random() * maxX));
+  const newY = Math.max(8, Math.floor(Math.random() * maxY));
+
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = newX + 'px';
+  noBtn.style.top  = newY + 'px';
+  noBtn.style.zIndex = '999';
+
+  noCount++;
+  if (noCount < noMessages.length) {
+    noBtn.textContent = noMessages[noCount];
+  }
+}
+
+noBtn.addEventListener('mouseover', moveNoBtn);
+noBtn.addEventListener('touchstart', function(e) {
+  e.preventDefault();
+  moveNoBtn();
+}, { passive: false });
+
+/* ===== "HA" TUGMA ===== */
+function handleYes() {
+  document.getElementById('mainView').style.display = 'none';
+  document.getElementById('meetingBox').style.display = 'block';
+  noBtn.style.display = 'none';
+
+  sendTelegram("💖 U rozi bo'ldi! Uchrashuv kunini tanlayapti...");
+
+  for (let i = 0; i < 30; i++) {
+    setTimeout(spawnHeart, i * 70);
+  }
+}
+
+/* ===== TASDIQLASH ===== */
+async function confirmMeeting() {
+  const day  = document.getElementById('meetingDay').value;
+  const time = document.getElementById('meetingTime').value;
+
+  if (!day) {
+    const sel = document.querySelector('.select-styled');
+    sel.style.borderColor = 'rgba(255,80,120,0.8)';
+    setTimeout(() => sel.style.borderColor = 'rgba(255,150,180,0.3)', 1500);
+    return;
+  }
+
+  document.getElementById('meetingBox').style.display  = 'none';
+  document.getElementById('successMsg').style.display  = 'block';
+
+  document.getElementById('meetDetails').innerHTML =
+    `<div class="detail-badge">📅 ${day} · 🕐 ${time} · 📍 Magic City</div>`;
+
+  await sendTelegram(
+    `💖 Uchrashuv tasdiqlandi!\n📅 Kun: ${day}\n🕐 Vaqt: ${time}\n📍 Joy: Magic City`
+  );
+
+  launchConfetti();
+  for (let i = 0; i < 60; i++) {
+    setTimeout(spawnHeart, i * 55);
+  }
+}
+
+/* ===== ISHGA TUSHIRISH ===== */
+initStars();
+</script>
+</body>
+</html>
