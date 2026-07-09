@@ -68,6 +68,18 @@
     100%{ transform:translateX(-50%) scale(2.1); opacity:0; }
   }
 
+  /* ===== aurora mesh (ambient drifting colour, modern depth) ===== */
+  .aurora-layer{ position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+  .aurora-blob{ position:absolute; border-radius:50%; filter:blur(64px); opacity:.32; animation:auroraDrift ease-in-out infinite; }
+  .aurora-blob.b1{ width:320px; height:320px; background:var(--rose); top:-70px; left:-70px; animation-duration:19s; }
+  .aurora-blob.b2{ width:280px; height:280px; background:var(--champagne); bottom:-70px; right:-40px; animation-duration:23s; animation-delay:-6s; }
+  .aurora-blob.b3{ width:250px; height:250px; background:var(--rose-deep); top:42%; right:6%; animation-duration:26s; animation-delay:-12s; }
+  @keyframes auroraDrift{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    33%{ transform:translate(28px,-22px) scale(1.08); }
+    66%{ transform:translate(-22px,24px) scale(.94); }
+  }
+
   .petal{ position:fixed; top:-40px; pointer-events:none; z-index:1; opacity:.9; animation:petalFall linear forwards; filter:drop-shadow(0 3px 5px rgba(0,0,0,.3)); }
   @keyframes petalFall{
     0%{ transform:translateY(-30px) rotate(0deg); opacity:0; }
@@ -104,6 +116,18 @@
     animation:softReveal 1.4s cubic-bezier(.22,1,.36,1) both;
     transition:transform .12s ease-out, box-shadow .3s ease;
   }
+  .card::before{
+    content:'';
+    position:absolute; inset:-1px; border-radius:inherit;
+    padding:1px;
+    background:linear-gradient(135deg, rgba(226,172,164,.55), rgba(217,185,138,.12) 45%, rgba(226,172,164,.5) 100%);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    opacity:.55;
+    animation:cardBorderGlow 5.5s ease-in-out infinite;
+    pointer-events:none;
+  }
   .card::after{
     content:'';
     position:absolute; inset:0; border-radius:inherit;
@@ -113,6 +137,10 @@
     mix-blend-mode:overlay;
   }
   .card.tilting::after{ opacity:1; }
+  @keyframes cardBorderGlow{
+    0%,100%{ opacity:.4; }
+    50%{ opacity:.8; }
+  }
   @keyframes softReveal{
     0%{ opacity:0; transform:translateY(30px) scale(.95); }
     60%{ opacity:1; transform:translateY(-3px) scale(1.015); }
@@ -128,6 +156,7 @@
   }
 
   .sticker{
+    position:relative;
     display:inline-flex; align-items:center; justify-content:center;
     width:88px; height:88px; margin:0 auto 16px;
     border-radius:26px;
@@ -148,13 +177,83 @@
     50%{ transform:rotate(-2deg) translateY(-6px); }
   }
 
+  /* ---- pulsing heart sticker (hero signature moment) ---- */
+  .sticker--heart{
+    width:96px; height:96px;
+    border-radius:50%;
+    transform:none;
+    animation:heartFloat 4.4s ease-in-out infinite;
+    background:
+      radial-gradient(circle at 33% 28%, rgba(255,255,255,.32), rgba(255,255,255,.02) 55%),
+      linear-gradient(150deg, rgba(226,120,110,.22), rgba(156,90,86,.08));
+    border:1.5px solid rgba(226,172,164,.4);
+    box-shadow:
+      0 18px 36px rgba(156,90,86,.4),
+      inset 0 1px 0 rgba(255,255,255,.35),
+      inset 0 -8px 18px rgba(0,0,0,.16);
+  }
+  .sticker--heart::before{
+    content:'';
+    position:absolute; inset:-18px;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(226,120,110,.45), transparent 68%);
+    filter:blur(3px);
+    animation:heartGlow 1.8s ease-in-out infinite;
+  }
+  .heart-ring{
+    position:absolute; top:50%; left:50%;
+    width:74%; height:74%;
+    border-radius:50%;
+    border:1.5px solid rgba(226,172,164,.65);
+    transform:translate(-50%,-50%) scale(.8);
+    opacity:0;
+    animation:heartRing 1.8s ease-out infinite;
+    pointer-events:none;
+  }
+  .heart-ring--2{ animation-delay:.9s; }
+  .sticker--heart .sticker-emoji{
+    transform:none;
+    display:inline-block;
+    animation:heartbeat 1.8s ease-in-out infinite;
+    filter:
+      drop-shadow(0 4px 10px rgba(156,50,45,.5))
+      drop-shadow(0 0 22px rgba(226,120,110,.45));
+  }
+  @keyframes heartFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+  }
+  @keyframes heartbeat{
+    0%{ transform:scale(1); }
+    15%{ transform:scale(1.22); }
+    30%{ transform:scale(1); }
+    45%{ transform:scale(1.2); }
+    62%{ transform:scale(1); }
+    100%{ transform:scale(1); }
+  }
+  @keyframes heartGlow{
+    0%,100%{ opacity:.5; transform:scale(1); }
+    22%{ opacity:.95; transform:scale(1.18); }
+    46%{ opacity:.5; transform:scale(1); }
+  }
+  @keyframes heartRing{
+    0%{ transform:translate(-50%,-50%) scale(.75); opacity:.6; }
+    100%{ transform:translate(-50%,-50%) scale(2); opacity:0; }
+  }
+
   .card h1{
     font-family:'Fraunces',serif;
     font-weight:600; font-style:italic;
     color:var(--ivory);
-    background:linear-gradient(120deg, var(--ivory), var(--rose-bright));
+    background:linear-gradient(120deg, var(--ivory) 0%, var(--rose-bright) 30%, var(--champagne) 50%, var(--rose-bright) 70%, var(--ivory) 100%);
+    background-size:250% 100%;
     -webkit-background-clip:text; background-clip:text; color:transparent;
-    font-size:30px; letter-spacing:.005em; margin-bottom:6px;
+    font-size:31px; letter-spacing:.005em; margin-bottom:6px;
+    animation:titleShimmer 7s ease-in-out infinite;
+  }
+  @keyframes titleShimmer{
+    0%,100%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
   }
 
   .ornament{ display:flex; align-items:center; justify-content:center; gap:10px; width:150px; margin:18px auto 24px; }
@@ -166,6 +265,11 @@
       0 0 8px var(--champagne-soft),
       inset -1px -1px 2px rgba(0,0,0,.3),
       inset 1px 1px 2px rgba(255,255,255,.5);
+    animation:dotGlow 2.6s ease-in-out infinite;
+  }
+  @keyframes dotGlow{
+    0%,100%{ box-shadow:0 0 8px var(--champagne-soft), inset -1px -1px 2px rgba(0,0,0,.3), inset 1px 1px 2px rgba(255,255,255,.5); }
+    50%{ box-shadow:0 0 16px var(--champagne-soft), inset -1px -1px 2px rgba(0,0,0,.3), inset 1px 1px 2px rgba(255,255,255,.5); }
   }
 
   .card p{
@@ -192,7 +296,9 @@
     cursor:pointer;
     font-family:'Manrope',sans-serif;
     font-size:16px; font-weight:600; letter-spacing:.02em;
-    background:linear-gradient(135deg, var(--rose), var(--rose-deep));
+    background:linear-gradient(120deg, var(--rose) 0%, var(--rose-deep) 35%, var(--rose-bright) 50%, var(--rose-deep) 65%, var(--rose) 100%);
+    background-size:240% 100%;
+    animation:btnShimmer 4.5s linear infinite;
     color:var(--ink);
     box-shadow:
       0 1px 0 rgba(255,255,255,.3) inset,
@@ -200,6 +306,10 @@
       0 14px 30px rgba(156,90,86,.42),
       0 3px 0 rgba(110,55,52,.8);
     transition:transform .18s ease, box-shadow .18s ease;
+  }
+  @keyframes btnShimmer{
+    0%{ background-position:0% 50%; }
+    100%{ background-position:100% 50%; }
   }
   .btn-yes:hover{
     transform:translateY(-3px) scale(1.02);
@@ -395,13 +505,22 @@
 
 <div class="stars-layer" id="starsLayer"></div>
 <div class="glow-ring"></div>
+<div class="aurora-layer" aria-hidden="true">
+  <span class="aurora-blob b1"></span>
+  <span class="aurora-blob b2"></span>
+  <span class="aurora-blob b3"></span>
+</div>
 
 <div class="card-wrap">
   <div class="card" id="mainCard">
 
     <!-- ASOSIY KO'RINISH -->
     <div id="mainView">
-      <div class="sticker"><span class="sticker-emoji">🌹</span></div>
+      <div class="sticker sticker--heart" aria-hidden="true">
+        <span class="heart-ring"></span>
+        <span class="heart-ring heart-ring--2"></span>
+        <span class="sticker-emoji">❤️</span>
+      </div>
       <div class="eyebrow">Shaxsiy taklif</div>
       <h1>Salom, qalbim</h1>
       <div class="ornament"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
